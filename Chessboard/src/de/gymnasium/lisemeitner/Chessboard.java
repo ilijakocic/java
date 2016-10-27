@@ -4,67 +4,41 @@ package de.gymnasium.lisemeitner;
  * Created by ilija on 21.10.16.
  */
 
-//Chessboard.java
-//Author: Ilija Kocich
-//Draws a chessboard with exactly 64 squares.
-
-//Imports necessary GPanel library
 import ch.aplu.util.*;
 
-//Main Class
 public class Chessboard {
-    //GPanel border size:
+    private GPanel canvas;
+    private int canvasSize = 360;
+    private int squareSize;
 
-    //(0, y_axis)
-    //  ^
-    //  |
-    //  |
-    //  |
-    //(0,0)-------->(x_axis, 0)
-    GPanel gPanel;
-    int border = 64;
-    int x_axis = border;
-    int y_axis = border;
-
-    //Square dimension:
-    int side_a = border / 8;
-
-    //Constructor Method
-    Chessboard() {
-        //Creates canvas called "gPanel" on which the squares will be drawn.
-        gPanel = new GPanel(0, x_axis, 0, y_axis);
+    private int getSquareSize() {
+        return canvasSize / 8;
     }
 
-    //Draws square with starting position on the x/y-axis as parameters.
-    // 1. _
-    // 2. _|
-    // 3. =|
-    // 4.|=|
+    private Chessboard(int inputDimension, int inputSizePercentage) {
+        int sizeMultiplier = inputSizePercentage / 100;
+        canvasSize = inputDimension;
+        canvas = new GPanel(0, canvasSize, 0, canvasSize);
+        squareSize = getSquareSize() * sizeMultiplier;
+    }
+
     private void drawSquare(int x, int y) {
-        gPanel.line(x, y, (x + side_a), y);
-        gPanel.line((x + side_a), y, (x + side_a), (y + side_a));
-        gPanel.line((x + side_a), (y + side_a), x, (y + side_a));
-        gPanel.line(x, (y + side_a), x, y);
+        canvas.line(x, y, (x + squareSize), y);
+        canvas.line((x + squareSize), y, (x + squareSize), (y + squareSize));
+        canvas.line((x + squareSize), (y + squareSize), x, (y + squareSize));
+        canvas.line(x, (y + squareSize), x, y);
     }
 
-    //Draws series of rectangles in the y- or the x-axis.
-    public void draw() {
-        for (int x = 0; x <= border; x = x + side_a) {
-            for (int y = 0; y <= border; y = y + side_a) {
+    private void drawGrid() {
+        for (int x = 0; x <= canvasSize - squareSize; x = x + squareSize) {
+            for (int y = 0; y <= canvasSize - squareSize; y = y + squareSize) {
                 drawSquare(x, y);
             }
         }
     }
 
-    //Executive Method
     public static void main(String[] args) {
-
-        //GPanel panel = new GPanel(0, x_axis, 0, y_axis);
-        //Constructor method that draws the chessboard on the canvas.
-        Chessboard chessboard  = new Chessboard();
-        chessboard.draw();
-
-
-
+        Chessboard aChessboard  = new Chessboard(360, 100);
+        aChessboard.drawGrid();
     }
 }
